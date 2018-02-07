@@ -14,6 +14,7 @@ enum Operation:String {
     case Divide = "/"
     case Multiply = "*"
     case Mod = "%"
+    case Negate = "_"
     case NULL = "Null"
 }
 
@@ -59,31 +60,39 @@ class ViewController: UIViewController {
     }
     
     @IBAction func equalPressed(_ sender: RoundButton) {
-        operation(operation: currentOperation)
+        operation(op: currentOperation)
     }
     
     @IBAction func plusPressed(_ sender: RoundButton) {
-        operation(operation: .Add)
+        operation(op: .Add)
     }
     
     @IBAction func minusPressed(_ sender: RoundButton) {
-        operation(operation: .Subtract)
+        operation(op: .Subtract)
     }
     @IBAction func multiplyPressed(_ sender: RoundButton) {
-        operation(operation: .Multiply)
+        operation(op: .Multiply)
     }
     
     @IBAction func dividePressed(_ sender: RoundButton) {
-        operation(operation: .Divide)
+        operation(op: .Divide)
     }
     
     @IBAction func negPressed(_ sender: RoundButton) {
-        
+        if runningNumber.count == 0 {
+            outputLbl.text = "0"
+        }else if runningNumber.contains("-") {
+            runningNumber.remove(at: runningNumber.startIndex)
+            outputLbl.text = runningNumber
+        } else {
+           runningNumber.insert("-", at: runningNumber.startIndex)
+            outputLbl.text = runningNumber
+        }
     }
     @IBAction func modPressed(_ sender: RoundButton) {
-        operation(operation: .Mod)
+        operation(op: .Mod)
     }
-    func operation(operation: Operation) {
+    func operation(op: Operation) {
         if currentOperation != .NULL {
             if runningNumber != "" {
                 rightValue = runningNumber
@@ -98,7 +107,7 @@ class ViewController: UIViewController {
                 }else if currentOperation == .Divide {
                     result = "\(Double(leftValue)! / Double(rightValue)!)"
                 }else if currentOperation == .Mod {
-                    
+                    result = "\(Int(leftValue)! - ((Int(leftValue)! / Int(rightValue)!) * Int(rightValue)!))"
                 }
                 leftValue = result
                 if(Double(result)!.truncatingRemainder(dividingBy: 1) == 0) {
@@ -106,11 +115,11 @@ class ViewController: UIViewController {
                 }
                 outputLbl.text = result
             }
-            currentOperation = operation
+            currentOperation = op
         } else {
             leftValue = runningNumber
             runningNumber = ""
-            currentOperation = operation
+            currentOperation = op
         }
     }
 }
