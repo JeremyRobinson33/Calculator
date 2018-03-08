@@ -10,8 +10,6 @@ import Foundation
 
 class Calculator{
     
-   
-    @IBOutlet var outputLbl: UILabel!
     var runningNumber = ""
     var leftValue = ""
     var rightValue = ""
@@ -49,7 +47,7 @@ class Calculator{
                 if(Double(result)!.truncatingRemainder(dividingBy: 1) == 0) {
                     result = "\(Int(Double(result)!))"
                 }
-                outputLbl.text = result.endAt()
+                result.endAt()
             }
             currentOperation = op
         } else {

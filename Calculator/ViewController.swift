@@ -10,86 +10,80 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    //@IBOutlet weak var outputLbl: UILabel!
+    @IBOutlet weak var outputLbl: UILabel!
     var model = Calculator()
-    var outputLbl: UILabel!
-    var runningNumber:String = ""
-    var leftValue:String = ""
-    var rightValue:String = ""
-    var result:String = ""
-    var currentOperation:Calculator.Operation = .NULL
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        runningNumber = model.runningNumber
-        leftValue = model.leftValue
-        rightValue = model.rightValue
-        result = model.result
-        currentOperation = model.currentOperation
-        outputLbl = Calculator.outputLbl
         
         outputLbl.text = "0"
     }
     
     @IBAction func numberPressed(_ sender: RoundButton) {
-        if runningNumber.count <= 7 {
-            runningNumber += "\(sender.tag)"
-            outputLbl.text = runningNumber
+        if model.runningNumber.count <= 7 {
+            model.runningNumber += "\(sender.tag)"
+            outputLbl.text = model.runningNumber
         }
     }
     
     @IBAction func acPressed(_ sender: RoundButton) {
-        runningNumber = ""
-        leftValue = ""
-        rightValue = ""
-        result = ""
-        currentOperation = .NULL
+        model.runningNumber = ""
+        model.leftValue = ""
+        model.rightValue = ""
+        model.result = ""
+        model.currentOperation = .NULL
         outputLbl.text = "0"
     }
     
     @IBAction func dotPressed(_ sender: RoundButton) {
-        if runningNumber.count == 0 {
-            runningNumber += "0."
+        if model.runningNumber.count == 0 {
+            model.runningNumber += "0."
         }
-        if runningNumber.count <= 6 && (runningNumber.contains(".") == false) {
-            runningNumber += "."
-            outputLbl.text = runningNumber
+        if model.runningNumber.count <= 6 && (model.runningNumber.contains(".") == false) {
+            model.runningNumber += "."
+            outputLbl.text = model.runningNumber
         }
     }
     
     @IBAction func equalPressed(_ sender: RoundButton) {
-        model.operation(op: currentOperation)
+        model.operation(op: model.currentOperation)
+        outputLbl.text = model.result
     }
     
     @IBAction func plusPressed(_ sender: RoundButton) {
         model.operation(op: .Add)
+        outputLbl.text = model.result
     }
     
     @IBAction func minusPressed(_ sender: RoundButton) {
         model.operation(op: .Subtract)
+        outputLbl.text = model.result
     }
     @IBAction func multiplyPressed(_ sender: RoundButton) {
         model.operation(op: .Multiply)
+        outputLbl.text = model.result
     }
     
     @IBAction func dividePressed(_ sender: RoundButton) {
         model.operation(op: .Divide)
+        outputLbl.text = model.result
     }
     
     @IBAction func negPressed(_ sender: RoundButton) {
-        if runningNumber.count == 0 {
+        if model.runningNumber.count == 0 {
             outputLbl.text = "0"
-        }else if runningNumber.contains("-") {
-            runningNumber.remove(at: runningNumber.startIndex)
+        }else if model.runningNumber.contains("-") {
+            model.runningNumber.remove(at: model.runningNumber.startIndex)
         } else {
-           runningNumber.insert("-", at: runningNumber.startIndex)
+           model.runningNumber.insert("-", at: model.runningNumber.startIndex)
         }
     }
     @IBAction func modPressed(_ sender: RoundButton) {
         model.operation(op: .Mod)
+        outputLbl.text = model.result
     }
     
     @IBAction func rootPressed(_ sender: RoundButton) {
-        runningNumber = "\(sqrt(Double(runningNumber)!).rounded(toPlaces: 7))"
+        model.runningNumber = "\(sqrt(Double(model.runningNumber)!).rounded(toPlaces: 7))"
     }
 }
