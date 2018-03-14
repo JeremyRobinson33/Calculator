@@ -15,7 +15,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         outputLbl.text = "0"
     }
     
@@ -27,63 +26,43 @@ class ViewController: UIViewController {
     }
     
     @IBAction func acPressed(_ sender: RoundButton) {
-        model.runningNumber = ""
-        model.leftValue = ""
-        model.rightValue = ""
-        model.result = ""
-        model.currentOperation = .NULL
+        model.clear()
         outputLbl.text = "0"
     }
     
     @IBAction func dotPressed(_ sender: RoundButton) {
-        if model.runningNumber.count == 0 {
-            model.runningNumber += "0."
-        }
-        if model.runningNumber.count <= 6 && (model.runningNumber.contains(".") == false) {
-            model.runningNumber += "."
-            outputLbl.text = model.runningNumber
-        }
+        outputLbl.text = model.decimal()
     }
     
     @IBAction func equalPressed(_ sender: RoundButton) {
         model.operation(op: model.currentOperation)
-        outputLbl.text = model.result
+        outputLbl.text = model.leftValue
     }
     
     @IBAction func plusPressed(_ sender: RoundButton) {
         model.operation(op: .Add)
-        outputLbl.text = model.result
     }
     
     @IBAction func minusPressed(_ sender: RoundButton) {
         model.operation(op: .Subtract)
-        outputLbl.text = model.result
     }
     @IBAction func multiplyPressed(_ sender: RoundButton) {
         model.operation(op: .Multiply)
-        outputLbl.text = model.result
     }
     
     @IBAction func dividePressed(_ sender: RoundButton) {
         model.operation(op: .Divide)
-        outputLbl.text = model.result
     }
     
     @IBAction func negPressed(_ sender: RoundButton) {
-        if model.runningNumber.count == 0 {
-            outputLbl.text = "0"
-        }else if model.runningNumber.contains("-") {
-            model.runningNumber.remove(at: model.runningNumber.startIndex)
-        } else {
-           model.runningNumber.insert("-", at: model.runningNumber.startIndex)
-        }
+        outputLbl.text = model.negative()
     }
+    
     @IBAction func modPressed(_ sender: RoundButton) {
         model.operation(op: .Mod)
-        outputLbl.text = model.result
     }
     
     @IBAction func rootPressed(_ sender: RoundButton) {
-        model.runningNumber = "\(sqrt(Double(model.runningNumber)!).rounded(toPlaces: 7))"
+        outputLbl.text = model.root()
     }
 }
